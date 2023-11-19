@@ -1,0 +1,16 @@
+{
+    "name": "TeamsSystem",
+    "rootNamespace": "TeamsSystem",
+    "references": [
+        "GUID:daf56cadbc1ea614994800ee06124dee"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
