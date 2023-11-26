@@ -4,11 +4,7 @@ namespace TeamsSystem
 {
     public sealed class TeamMember : MonoBehaviour
     {
-        [SerializeField] private Team _team;
-
-        public Team Team
-        {
-            get { return _team; }
-        }
+        [field: SerializeField]
+        public Team Team { get; private set; }
     }
 }

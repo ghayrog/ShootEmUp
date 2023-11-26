@@ -3,12 +3,14 @@ using UnityEngine;
 
 namespace HealthSystem
 {
-    public sealed class Health : MonoBehaviour
+    public sealed class HealthComponent : MonoBehaviour
     {
         public event Action<GameObject> OnDeath;
         public event Action<GameObject> OnTakeDamage;
 
-        [SerializeField] private int _maxHitPoints;
+        [SerializeField]
+        private int _maxHitPoints;
+
         private int _hitPoints;
 
         public void ResetHealth()

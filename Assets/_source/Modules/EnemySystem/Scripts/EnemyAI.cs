@@ -6,21 +6,28 @@ namespace EnemySystem
 {
     internal sealed class EnemyAI : MonoBehaviour
     {
-        private const float MIN_DISTANCE_ERROR = 0.25f;
+        [SerializeField]
+        private WeaponComponent _weapon;
 
-        [SerializeField] private WeaponComponent _weapon;
-        [SerializeField] private StarshipMovement _movement;
-        [SerializeField] private float _shootingCooldownTimer;
+        [SerializeField]
+        private UnitMovementComponent _movement;
 
-        private Transform _moveTarget;
-        private Transform _aimTarget;
-        private float _shootingElapsedTime;
+        [SerializeField]
+        private float _shootingCooldownTimer;
+
+        private EnemyMovement _enemyMovement;
+        private EnemyWeapon _enemyWeapon;
+
+        private void Awake()
+        {
+            _enemyMovement = new EnemyMovement(_movement, transform, transform);
+            _enemyWeapon = new EnemyWeapon(_weapon, _shootingCooldownTimer, transform, transform);
+        }
 
         internal void SetTargets(Transform moveTarget, Transform aimTarget)
         {
-            _moveTarget = moveTarget;
-            _aimTarget= aimTarget;
-            _shootingElapsedTime = _shootingCooldownTimer;
+            _enemyMovement.SetTarget(moveTarget);
+            _enemyWeapon.SetTarget(aimTarget);
         }
 
         internal void SetSpawner(BulletSpawner bulletSpawner)
@@ -30,25 +37,8 @@ namespace EnemySystem
 
         private void FixedUpdate()
         {
-            if (_shootingElapsedTime > 0)
-            {
-                _shootingElapsedTime -= Time.fixedDeltaTime;
-            }
-
-            Vector2 vector = _moveTarget.position - transform.position;
-            if (vector.magnitude >= MIN_DISTANCE_ERROR)
-            {
-                _movement.Move(vector.x, vector.y);
-                return;
-            }
-
-            if (_shootingElapsedTime <= 0)
-            {
-                Vector2 direction = _aimTarget.position - transform.position;
-                _weapon.SetFirePointDirection(direction);
-                _weapon.Shoot();
-                _shootingElapsedTime = _shootingCooldownTimer;
-            }
+            _enemyMovement.FixedUpdate();
+            _enemyWeapon.FixedUpdate(Time.fixedDeltaTime, _enemyMovement.isTargetReached);
         }
     }
 }

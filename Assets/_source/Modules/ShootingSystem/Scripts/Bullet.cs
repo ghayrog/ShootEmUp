@@ -17,13 +17,13 @@ namespace ShootingSystem
 
         internal void Initialize(Vector2 direction, Vector3 position, BulletConfig bulletConfig, BulletBoundary bulletBoundary)
         {
-            this.gameObject.GetComponent<Rigidbody2D>().velocity = direction * bulletConfig.speed;
-            this.Team = bulletConfig.team;
-            this._damage = bulletConfig.damage;
-            this._bulletBoundary = bulletBoundary;
-            this.gameObject.layer = GetTeamLayer(bulletConfig.team);
-            this.transform.position = position;
-            this.gameObject.GetComponent<SpriteRenderer>().color = bulletConfig.color;
+            gameObject.GetComponent<Rigidbody2D>().velocity = direction * bulletConfig.speed;
+            Team = bulletConfig.team;
+            _damage = bulletConfig.damage;
+            _bulletBoundary = bulletBoundary;
+            gameObject.layer = GetTeamLayer(bulletConfig.team);
+            transform.position = position;
+            gameObject.GetComponent<SpriteRenderer>().color = bulletConfig.color;
         }
 
         private int GetTeamLayer(Team team)
@@ -57,7 +57,7 @@ namespace ShootingSystem
 
         private bool CheckCollisionWithHealth(Collision2D collision)
         {
-            var health = collision.gameObject.GetComponent<Health>();
+            var health = collision.gameObject.GetComponent<HealthComponent>();
             if (!health) return false;
 
             var teamMember = collision.gameObject.GetComponent<TeamMember>();

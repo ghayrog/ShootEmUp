@@ -4,9 +4,14 @@ namespace ShootingSystem
 {
     public sealed class WeaponComponent : MonoBehaviour
     {
-        [SerializeField] private Transform _firePoint;
-        [SerializeField] private BulletConfig _bulletConfig;
-        [SerializeField] private BulletSpawner _bulletSpawner;
+        [SerializeField]
+        private Transform _firePoint;
+
+        [SerializeField]
+        private BulletConfig _bulletConfig;
+
+        [SerializeField]
+        private BulletSpawner _bulletSpawner;
 
         public void Shoot()
         {

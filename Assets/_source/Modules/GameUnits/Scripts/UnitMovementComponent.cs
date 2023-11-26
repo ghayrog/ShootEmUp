@@ -2,10 +2,12 @@ using UnityEngine;
 
 namespace GameUnits
 {
-    public sealed class StarshipMovement : MonoBehaviour
+    public sealed class UnitMovementComponent : MonoBehaviour
     {
         private Rigidbody2D _rigidbody2D;
-        [SerializeField] private float _speed = 5.0f;
+
+        [SerializeField]
+        private float _speed = 5.0f;
 
         private void Awake()
         {

@@ -7,12 +7,23 @@ namespace EnemySystem
 {
     internal sealed class EnemySpawner : MonoBehaviour
     {
-        [SerializeField] private int _maxEnemyCount = 7;
-        [SerializeField] private ObjectPool _enemyPool;
-        [SerializeField] private float _spawnInterval = 1f;
-        [SerializeField] private Transform aimTarget;
-        [SerializeField] private EnemyPositions _enemyPositions;
-        [SerializeField] private BulletSpawner _bulletSpawner;
+        [SerializeField]
+        private int _maxEnemyCount = 7;
+
+        [SerializeField]
+        private ObjectPool _enemyPool;
+
+        [SerializeField]
+        private float _spawnInterval = 1f;
+
+        [SerializeField]
+        private Transform aimTarget;
+
+        [SerializeField]
+        private EnemyPositions _enemyPositions;
+
+        [SerializeField]
+        private BulletSpawner _bulletSpawner;
 
         private int _enemyCount = 0;
         private Coroutine _periodicSpawnCoroutine;

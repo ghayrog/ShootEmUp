@@ -1,49 +1,41 @@
 using UnityEngine;
-using GameUnits;
-using ShootingSystem;
 
 namespace Player
 {
-    public sealed class PlayerInput : MonoBehaviour
+    internal sealed class PlayerInput
     {
+        internal float HorizontalDirection { get; private set; }
+        internal bool FireRequired { get; private set; }
 
-        [SerializeField]
-        private StarshipMovement _starshipMovement;
+        internal PlayerInput()
+        {
+            HorizontalDirection = 0;
+            FireRequired = false;
+        }
 
-        [SerializeField]
-        private WeaponComponent _weapon;
+        internal void ResetFireStatus()
+        { 
+            FireRequired = false;
+        }
 
-        private float _horizontalDirection;
-        private bool _fireRequired = false;
-
-        private void Update()
+        internal void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                _fireRequired = true;
+                FireRequired = true;
             }
 
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                _horizontalDirection = -1;
+                HorizontalDirection = -1;
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                _horizontalDirection = 1;
+                HorizontalDirection = 1;
             }
             else
             {
-                _horizontalDirection = 0;
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            if (_horizontalDirection != 0) _starshipMovement.Move(_horizontalDirection, 0);
-            if (_fireRequired)
-            {
-                _weapon.Shoot();
-                _fireRequired = false;
+                HorizontalDirection = 0;
             }
         }
     }

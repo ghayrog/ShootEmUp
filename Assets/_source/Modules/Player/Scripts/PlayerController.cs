@@ -7,7 +7,9 @@ namespace Player
     public sealed class PlayerController : MonoBehaviour
     {
         public event Action<PlayerController> OnPlayerDeath;
-        [SerializeField] private Health _playerHealth;
+
+        [SerializeField]
+        private HealthComponent _playerHealth;
 
         private void Awake()
         {

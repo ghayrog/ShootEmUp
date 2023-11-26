@@ -5,8 +5,11 @@ namespace ShootingSystem
 { 
     public sealed class BulletSpawner : MonoBehaviour
     {
-        [SerializeField] private ObjectPool _bulletPool;
-        [SerializeField] private BulletBoundary _bulletBoundary;
+        [SerializeField]
+        private ObjectPool _bulletPool;
+
+        [SerializeField]
+        private BulletBoundary _bulletBoundary;
 
         internal void SpawnBullet(Transform firePoint, BulletConfig bulletConfig)
         { 

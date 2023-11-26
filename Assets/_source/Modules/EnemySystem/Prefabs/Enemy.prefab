@@ -214,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce848b21073a0a4998793633e4428aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 2
+  <Team>k__BackingField: 2
 --- !u!114 &3700992859047737599
 MonoBehaviour:
   m_ObjectHideFlags: 0

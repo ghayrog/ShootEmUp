@@ -10,8 +10,11 @@ namespace EnemySystem
         public event Action<EnemyController> OnDeath;
         public bool IsAlive { get; private set; }
 
-        [SerializeField] private Health _health;
-        [SerializeField] private EnemyAI _enemyAI;
+        [SerializeField]
+        private HealthComponent _health;
+
+        [SerializeField]
+        private EnemyAI _enemyAI;
 
         public void Initialize(Vector3 position, Transform moveTarget, Transform aimTarget, BulletSpawner bulletSpawner)
         { 
@@ -38,7 +41,7 @@ namespace EnemySystem
 
         private void EnemyDeath(GameObject gameObject)
         {
-            this.OnDeath.Invoke(this);
+            OnDeath.Invoke(this);
             IsAlive = false;
         }
     }
