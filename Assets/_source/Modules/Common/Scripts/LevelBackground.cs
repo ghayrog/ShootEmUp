@@ -1,27 +1,49 @@
 using System;
 using UnityEngine;
+using Game;
 
-namespace Game
+namespace Common
 {
-    internal sealed class LevelBackground : MonoBehaviour
+    internal sealed class LevelBackground : MonoBehaviour,
+        IGameStartListener, IGameFinishListener, IGamePauseListener, IGameResumeListener,
+        IGameFixedUpdateListener
     {
-        private float _startPositionY;
-
-        private float _endPositionY;
-
-        private float _movingSpeedY;
-
-        private float _positionX;
-
-        private float _positionZ;
-
-        private Transform _myTransform;
+        public float Priority => (float)LoadingPriority.Low;
 
         [SerializeField]
         private Params _params;
 
-        private void Awake()
+        private float _startPositionY;
+        private float _endPositionY;
+        private float _movingSpeedY;
+        private float _positionX;
+        private float _positionZ;
+        private Transform _myTransform;
+        private bool _isUpdateAllowed = false;
+        private Vector3 _initialPosition;
+
+
+        public void OnGameFinish()
         {
+            transform.position = _initialPosition;
+            enabled = false;
+        }
+
+        public void OnGamePause()
+        {
+            enabled = false;
+        }
+
+        public void OnGameResume()
+        {
+            enabled = true;
+        }
+
+        public void OnGameStart()
+        {
+            _initialPosition = transform.position;
+            enabled = true;
+            _isUpdateAllowed = true;
             _startPositionY = _params.StartPositionY;
             _endPositionY = _params.EndPositionY;
             _movingSpeedY = _params.MovingSpeedY;
@@ -31,8 +53,10 @@ namespace Game
             _positionZ = position.z;
         }
 
-        private void FixedUpdate()
+        public void OnFixedUpdate()
         {
+            if (!enabled) return;
+            if (!_isUpdateAllowed) return;
             if (_myTransform.position.y <= _endPositionY)
             {
                 _myTransform.position = new Vector3(

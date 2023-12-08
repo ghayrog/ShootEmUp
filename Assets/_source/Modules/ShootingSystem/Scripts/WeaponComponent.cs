@@ -1,9 +1,13 @@
 using UnityEngine;
+using Game;
 
 namespace ShootingSystem
 {
-    public sealed class WeaponComponent : MonoBehaviour
+    public sealed class WeaponComponent : MonoBehaviour,
+        IGameStartListener, IGameFinishListener, IGamePauseListener, IGameResumeListener
     {
+        public float Priority => (float)LoadingPriority.Low;
+
         [SerializeField]
         private Transform _firePoint;
 
@@ -15,6 +19,7 @@ namespace ShootingSystem
 
         public void Shoot()
         {
+            if (!enabled) return;
             _bulletSpawner.SpawnBullet(_firePoint, _bulletConfig);
         }
 
@@ -26,6 +31,26 @@ namespace ShootingSystem
         public void SetBulletSpawner(BulletSpawner bulletSpawner)
         {
             _bulletSpawner = bulletSpawner;
+        }
+
+        public void OnGameResume()
+        {
+            enabled = true;
+        }
+
+        public void OnGamePause()
+        {
+            enabled = false;
+        }
+
+        public void OnGameFinish()
+        {
+            enabled = false;
+        }
+
+        public void OnGameStart()
+        {
+            enabled = true;
         }
     }
 }

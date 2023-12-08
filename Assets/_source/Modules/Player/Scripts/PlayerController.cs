@@ -1,34 +1,45 @@
 using System;
 using UnityEngine;
 using HealthSystem;
+using Game;
 
 namespace Player
 {
-    public sealed class PlayerController : MonoBehaviour
+    public sealed class PlayerController : MonoBehaviour,
+        IGameStartListener, IGameFinishListener, IGamePauseListener, IGameResumeListener
     {
-        public event Action<PlayerController> OnPlayerDeath;
+        public event Action OnPlayerDeath;
+        public float Priority => (float)LoadingPriority.Low;
 
         [SerializeField]
         private HealthComponent _playerHealth;
 
-        private void Awake()
+        private void PlayerDeath(GameObject gameObject)
         {
+            OnPlayerDeath?.Invoke();
+        }
+
+        public void OnGameStart()
+        {
+            enabled = true;
+            _playerHealth.OnDeath += PlayerDeath;
             _playerHealth.ResetHealth();
         }
 
-        private void OnEnable()
+        public void OnGameFinish()
         {
-            _playerHealth.OnDeath += PlayerDeath;
-        }
-
-        private void OnDisable()
-        {
+            enabled = false;
             _playerHealth.OnDeath -= PlayerDeath;
         }
 
-        private void PlayerDeath(GameObject gameObject)
+        public void OnGamePause()
         {
-            OnPlayerDeath?.Invoke(this);
+            enabled = false;
+        }
+
+        public void OnGameResume()
+        {
+            enabled = true;
         }
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 using Common;
 using TeamsSystem;
 using HealthSystem;
+using Game;
 
 namespace ShootingSystem
 {
@@ -14,8 +15,10 @@ namespace ShootingSystem
         private int _damage;
         public Team Team { get; private set;}
         private BulletBoundary _bulletBoundary;
+        private bool _isBulletActive = false;
+        private Vector3 _velocityBuffer;
 
-        internal void Initialize(Vector2 direction, Vector3 position, BulletConfig bulletConfig, BulletBoundary bulletBoundary)
+        internal void Activate(Vector2 direction, Vector3 position, BulletConfig bulletConfig, BulletBoundary bulletBoundary)
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = direction * bulletConfig.speed;
             Team = bulletConfig.team;
@@ -24,6 +27,13 @@ namespace ShootingSystem
             gameObject.layer = GetTeamLayer(bulletConfig.team);
             transform.position = position;
             gameObject.GetComponent<SpriteRenderer>().color = bulletConfig.color;
+            _isBulletActive= true;
+        }
+
+        internal void Deactivate()
+        {
+            _isBulletActive = false;
+            gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         }
 
         private int GetTeamLayer(Team team)
@@ -68,12 +78,26 @@ namespace ShootingSystem
             return true;
         }
 
-        private void FixedUpdate()
+        public void OnFixedUpdate()
         {
+            if (!enabled) return;
             if (!_bulletBoundary.InBoundaries(this.transform.position))
             {
                 this.OnEndOfLife?.Invoke(this);
             }
+        }
+
+        public void OnGameResume()
+        {
+            gameObject.GetComponent<Rigidbody2D>().velocity = _velocityBuffer;
+            enabled = true;
+        }
+
+        public void OnGamePause()
+        {
+            enabled = false;
+            _velocityBuffer = gameObject.GetComponent<Rigidbody2D>().velocity;
+            gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         }
     }
 }

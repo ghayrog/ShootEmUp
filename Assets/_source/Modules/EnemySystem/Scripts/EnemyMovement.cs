@@ -29,6 +29,7 @@ namespace EnemySystem
             Vector2 vector = _moveTarget.position - _selfTransform.position;
             if (vector.magnitude >= MIN_DISTANCE_ERROR)
             {
+                //Debug.Log("Moving enemy");
                 _movement.Move(vector.x, vector.y);
                 isTargetReached = false;
             }

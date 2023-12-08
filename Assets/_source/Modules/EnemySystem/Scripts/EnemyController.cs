@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using HealthSystem;
 using ShootingSystem;
+using Game;
 
 namespace EnemySystem
 {
@@ -17,30 +18,20 @@ namespace EnemySystem
         private EnemyAI _enemyAI;
 
         public void Initialize(Vector3 position, Transform moveTarget, Transform aimTarget, BulletSpawner bulletSpawner)
-        { 
+        {
+            Debug.Log("Initializing Enemy Controller");
             transform.position = position;
+            _enemyAI.Initialize();
             _enemyAI.SetTargets(moveTarget, aimTarget);
             _enemyAI.SetSpawner(bulletSpawner);
             _health.ResetHealth();
-        }
-
-        private void Awake()
-        {
-            IsAlive = true;
-        }
-
-        private void OnEnable()
-        {
             _health.OnDeath += EnemyDeath;
-        }
-
-        private void OnDisable()
-        {
-            _health.OnDeath -= EnemyDeath;
+            IsAlive = true;
         }
 
         private void EnemyDeath(GameObject gameObject)
         {
+            _health.OnDeath -= EnemyDeath;
             OnDeath.Invoke(this);
             IsAlive = false;
         }

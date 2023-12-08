@@ -1,7 +1,9 @@
 {
     "name": "GameUnits",
     "rootNamespace": "GameUnits",
-    "references": [],
+    "references": [
+        "GUID:7096991a729bfb144999c7062406140d"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
