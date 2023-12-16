@@ -6,7 +6,7 @@ namespace ShootingSystem
     public sealed class WeaponComponent : MonoBehaviour,
         IGameStartListener, IGameFinishListener, IGamePauseListener, IGameResumeListener
     {
-        public float Priority => (float)LoadingPriority.Low;
+        public float ExecutionPriority => (float)LoadingPriority.Low;
 
         [SerializeField]
         private Transform _firePoint;
@@ -16,6 +16,26 @@ namespace ShootingSystem
 
         [SerializeField]
         private BulletSpawner _bulletSpawner;
+
+        public void OnGameStart()
+        {
+            enabled = true;
+        }
+
+        public void OnGamePause()
+        {
+            enabled = false;
+        }
+
+        public void OnGameResume()
+        {
+            enabled = true;
+        }
+
+        public void OnGameFinish()
+        {
+            enabled = false;
+        }
 
         public void Shoot()
         {
@@ -31,26 +51,6 @@ namespace ShootingSystem
         public void SetBulletSpawner(BulletSpawner bulletSpawner)
         {
             _bulletSpawner = bulletSpawner;
-        }
-
-        public void OnGameResume()
-        {
-            enabled = true;
-        }
-
-        public void OnGamePause()
-        {
-            enabled = false;
-        }
-
-        public void OnGameFinish()
-        {
-            enabled = false;
-        }
-
-        public void OnGameStart()
-        {
-            enabled = true;
         }
     }
 }

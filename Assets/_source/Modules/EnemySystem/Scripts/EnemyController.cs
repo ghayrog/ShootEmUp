@@ -24,7 +24,7 @@ namespace EnemySystem
             _enemyAI.Initialize();
             _enemyAI.SetTargets(moveTarget, aimTarget);
             _enemyAI.SetSpawner(bulletSpawner);
-            _health.ResetHealth();
+            _health.OnGameStart();
             _health.OnDeath += EnemyDeath;
             IsAlive = true;
         }

@@ -4,12 +4,13 @@ using UnityEngine.UI;
 
 namespace Game
 {
-    internal class GameText : MonoBehaviour
+    [RequireComponent(typeof(Text))]
+    internal sealed class GameText : MonoBehaviour
     {
         private Text _selfText;
         private Coroutine _coroutine;
 
-        internal void Initialize()
+        internal void Awake()
         {
             _selfText = gameObject.GetComponent<Text>();
             gameObject.SetActive(false);

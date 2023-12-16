@@ -4,31 +4,54 @@ using com.cyborgAssets.inspectorButtonPro;
 
 namespace Game
 {
-    internal class GameManager : MonoBehaviour
+    public sealed class GameManager : MonoBehaviour
     {
-        internal enum GameState
-        {
-            None,
-            Started,
-            Finished,
-            Paused,
-            Resumed
-        }
-
-        [SerializeField]
-        private GameUIManager _gameUIManager;
-
         [SerializeField]
         private GameState _gameState;
 
-        private List<IGameStartListener> gameStartListeners = new List<IGameStartListener>();
-        private List<IGameFinishListener> gameFinishListeners = new List<IGameFinishListener>();
-        private List<IGamePauseListener> gamePauseListeners = new List<IGamePauseListener>();
-        private List<IGameResumeListener> gameResumeListeners = new List<IGameResumeListener>();
+        private readonly List<IGameStartListener> gameStartListeners = new();
+        private readonly List<IGameFinishListener> gameFinishListeners = new();
+        private readonly List<IGamePauseListener> gamePauseListeners = new();
+        private readonly List<IGameResumeListener> gameResumeListeners = new();
 
-        private List<IGameUpdateListener> gameUpdateListeners = new List<IGameUpdateListener>();
-        private List<IGameLateUpdateListener> gameLateUpdateListeners = new List<IGameLateUpdateListener>();
-        private List<IGameFixedUpdateListener> gameFixedUpdateListeners = new List<IGameFixedUpdateListener>();
+        private readonly List<IGameUpdateListener> gameUpdateListeners = new();
+        private readonly List<IGameLateUpdateListener> gameLateUpdateListeners = new();
+        private readonly List<IGameFixedUpdateListener> gameFixedUpdateListeners = new();
+
+        private void FixedUpdate()
+        {
+            if (_gameState != GameState.Playing) return;
+            for (var i = 0; i < gameFixedUpdateListeners.Count; i++)
+            {
+                gameFixedUpdateListeners[i].OnFixedUpdate();
+            }
+        }
+
+        private void Update()
+        {
+            if (_gameState != GameState.Playing) return;
+            for (var i = 0; i < gameUpdateListeners.Count; i++)
+            {
+                gameUpdateListeners[i].OnUpdate();
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (_gameState != GameState.Playing) return;
+            for (var i = 0; i < gameLateUpdateListeners.Count; i++)
+            {
+                gameLateUpdateListeners[i].OnLateUpdate();
+            }
+        }
+
+        internal void AddMultipleListeners(IGameListener[] listeners)
+        {
+            for (int i = 0; i < listeners.Length; i++)
+            {
+                AddListener(listeners[i]);
+            }
+        }
 
         internal void AddListener(IGameListener listener)
         {
@@ -38,7 +61,7 @@ namespace Game
                 gameStartListeners.Sort(
                     (IGameStartListener listener1, IGameStartListener listener2) =>
                     {
-                        return (int)Mathf.Sign(listener1.Priority - listener2.Priority);
+                        return (int)Mathf.Sign(listener1.ExecutionPriority - listener2.ExecutionPriority);
                     }
                     );
             }
@@ -70,31 +93,20 @@ namespace Game
         }
 
         [ProPlayButton]
-        private void GameStart()
+        public void StartGame()
         {
             if (_gameState != GameState.None && _gameState != GameState.Finished) return;
             for (var i = 0; i < gameStartListeners.Count; i++)
             {
                 gameStartListeners[i].OnGameStart();
             }
-            _gameState = GameState.Started;
+            _gameState = GameState.Playing;
         }
 
         [ProPlayButton]
-        private void GameFinish()
+        public void PauseGame()
         {
-            if (_gameState == GameState.None || _gameState == GameState.Finished) return;
-            for (var i = 0; i < gameFinishListeners.Count; i++)
-            {
-                gameFinishListeners[i].OnGameFinish();
-            }
-            _gameState = GameState.Finished;
-        }
-
-        [ProPlayButton]
-        private void GamePause()
-        {
-            if (_gameState != GameState.Started) return;
+            if (_gameState != GameState.Playing) return;
             for (var i = 0; i < gamePauseListeners.Count; i++)
             {
                 gamePauseListeners[i].OnGamePause();
@@ -103,55 +115,26 @@ namespace Game
         }
 
         [ProPlayButton]
-        private void GameResume()
+        public void ResumeGame()
         {
             if (_gameState != GameState.Paused) return;
             for (var i = 0; i < gameResumeListeners.Count; i++)
             {
                 gameResumeListeners[i].OnGameResume();
             }
-            _gameState = GameState.Started;
+            _gameState = GameState.Playing;
         }
 
-        private void OnEnable()
+        [ProPlayButton]
+        public void FinishGame()
         {
-            _gameUIManager.Initialize();
-            _gameUIManager.OnStartUIButtonClick += GameStart;
-            _gameUIManager.OnPauseUIButtonClick += GamePause;
-            _gameUIManager.OnResumeUIButtonClick += GameResume;
-        }
-
-        private void OnDisable()
-        {
-            _gameUIManager.OnStartUIButtonClick -= GameStart;
-            _gameUIManager.OnPauseUIButtonClick -= GamePause;
-            _gameUIManager.OnResumeUIButtonClick -= GameResume;
-        }
-
-
-        private void Update()
-        {
-            for (var i = 0; i < gameUpdateListeners.Count; i++)
+            if (_gameState == GameState.None || _gameState == GameState.Finished) return;
+            for (var i = 0; i < gameFinishListeners.Count; i++)
             {
-                gameUpdateListeners[i].OnUpdate();
+                gameFinishListeners[i].OnGameFinish();
             }
+            _gameState = GameState.Finished;
+            Debug.Log("Game over!");
         }
-
-        private void FixedUpdate()
-        {
-            for (var i = 0; i < gameFixedUpdateListeners.Count; i++)
-            {
-                gameFixedUpdateListeners[i].OnFixedUpdate();
-            }
-        }
-
-        private void LateUpdate()
-        {
-            for (var i = 0; i < gameLateUpdateListeners.Count; i++)
-            {
-                gameLateUpdateListeners[i].OnLateUpdate();
-            }
-        }
-
     }
 }

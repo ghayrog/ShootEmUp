@@ -5,7 +5,7 @@ using Game;
 
 namespace Common
 {
-    public class ObjectPool : MonoBehaviour,
+    public sealed class ObjectPool : MonoBehaviour,
         IGameStartListener, IGameFinishListener
     {
         [SerializeField]
@@ -20,7 +20,7 @@ namespace Common
         [SerializeField]
         private Transform _world;
 
-        public float Priority => (float)LoadingPriority.High;
+        public float ExecutionPriority => (float)LoadingPriority.High;
 
         private readonly Queue<GameObject> _poolObjects = new();
         private readonly HashSet<GameObject> _activeObjects = new();

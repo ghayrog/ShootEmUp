@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace HealthSystem
 {
-    public sealed class HealthComponent : MonoBehaviour
+    public sealed class HealthComponent : MonoBehaviour,
+        IGameStartListener
     {
         public event Action<GameObject> OnDeath;
         public event Action<GameObject> OnTakeDamage;
@@ -14,7 +15,9 @@ namespace HealthSystem
 
         private int _hitPoints;
 
-        public void ResetHealth()
+        public float ExecutionPriority => (float)LoadingPriority.Low;
+
+        public void OnGameStart()
         {
             _hitPoints = _maxHitPoints;
         }
@@ -23,14 +26,14 @@ namespace HealthSystem
         {
             if (_hitPoints > 0)
             {
-                this.OnTakeDamage?.Invoke(this.gameObject);
+                OnTakeDamage?.Invoke(gameObject);
             }
 
             _hitPoints = Mathf.Max(_hitPoints - damage, 0);
 
             if (_hitPoints <= 0)
             {
-                this.OnDeath?.Invoke(this.gameObject);
+                OnDeath?.Invoke(gameObject);
             }
         }
     }

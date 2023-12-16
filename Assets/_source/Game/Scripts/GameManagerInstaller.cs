@@ -3,25 +3,20 @@
 namespace Game
 {
     [RequireComponent(typeof(GameManager))]
-    internal class GameManagerInstaller : MonoBehaviour
+    internal sealed class GameManagerInstaller : MonoBehaviour
     {
         [SerializeField]
         private Transform _worldObjectContainer;
+
         private void Awake()
         {
             var manager = GetComponent<GameManager>();
             
             var systemListeners = GetComponentsInChildren<IGameListener>();
-            foreach (IGameListener listener in systemListeners)
-            {
-                manager.AddListener(listener);
-            }
+            manager.AddMultipleListeners(systemListeners);
 
             var worldListeners = _worldObjectContainer.GetComponentsInChildren<IGameListener>();
-            foreach (IGameListener listener in worldListeners)
-            {
-                manager.AddListener(listener);
-            }
+            manager.AddMultipleListeners(worldListeners);
         }
     }
 }

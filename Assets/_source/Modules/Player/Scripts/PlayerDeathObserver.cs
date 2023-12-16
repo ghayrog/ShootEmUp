@@ -1,27 +1,33 @@
 ﻿using UnityEngine;
 using Game;
+using HealthSystem;
 
 namespace Player
 {
     internal sealed class PlayerDeathObserver : MonoBehaviour,
         IGameStartListener, IGameFinishListener
     {
-        public float Priority => (float)LoadingPriority.Low;
+        public float ExecutionPriority => (float)LoadingPriority.Low;
 
         [SerializeField]
-        private PlayerController _playerController;
+        private HealthComponent _playerHealth;
 
-        private GameOverManager gameOverManager;
-
-        public void OnGameFinish()
-        {
-            _playerController.OnPlayerDeath -= gameOverManager.FinishGame;
-        }
+        [SerializeField]
+        private GameManager _gameManager;
 
         public void OnGameStart()
         {
-            gameOverManager = GetComponent<GameOverManager>();
-            _playerController.OnPlayerDeath += gameOverManager.FinishGame;
+            _playerHealth.OnDeath += FinishGame;
+        }
+
+        public void OnGameFinish()
+        {
+            _playerHealth.OnDeath -= FinishGame;
+        }
+
+        private void FinishGame(GameObject gameObject)
+        { 
+            _gameManager.FinishGame();
         }
     }
 }

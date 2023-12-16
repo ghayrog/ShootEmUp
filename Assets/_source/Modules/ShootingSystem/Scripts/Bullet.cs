@@ -7,16 +7,20 @@ using Game;
 
 namespace ShootingSystem
 {
-    internal sealed class Bullet : MonoBehaviour
+    internal sealed class Bullet : MonoBehaviour,
+        IGameFixedUpdateListener, IGamePauseListener, IGameResumeListener
     {
-        private const int DEFAULT_BULLET_LAYER = 0;
+        public float ExecutionPriority => (float)LoadingPriority.Low;
 
         internal event Action<Bullet> OnEndOfLife;
-        private int _damage;
-        public Team Team { get; private set;}
+
+        internal Team Team { get; private set; }
+
         private BulletBoundary _bulletBoundary;
-        private bool _isBulletActive = false;
-        private Vector3 _velocityBuffer;
+        private int _damage;
+        private Vector2 _velocityBuffer;
+
+        private const int DEFAULT_BULLET_LAYER = 0;
 
         internal void Activate(Vector2 direction, Vector3 position, BulletConfig bulletConfig, BulletBoundary bulletBoundary)
         {
@@ -27,12 +31,10 @@ namespace ShootingSystem
             gameObject.layer = GetTeamLayer(bulletConfig.team);
             transform.position = position;
             gameObject.GetComponent<SpriteRenderer>().color = bulletConfig.color;
-            _isBulletActive= true;
         }
 
         internal void Deactivate()
         {
-            _isBulletActive = false;
             gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         }
 
@@ -80,7 +82,6 @@ namespace ShootingSystem
 
         public void OnFixedUpdate()
         {
-            if (!enabled) return;
             if (!_bulletBoundary.InBoundaries(this.transform.position))
             {
                 this.OnEndOfLife?.Invoke(this);

@@ -1,42 +1,28 @@
+using Game;
+using System;
 using UnityEngine;
 
 namespace Player
 {
-    internal sealed class PlayerInput
+    internal sealed class PlayerInput : MonoBehaviour,
+        IGameUpdateListener
     {
+        public event Action OnFire;
+
+        public float ExecutionPriority => (float)LoadingPriority.Low;
+
         internal float HorizontalDirection { get; private set; }
-        internal bool FireRequired { get; private set; }
 
-        internal PlayerInput()
-        {
-            HorizontalDirection = 0;
-            FireRequired = false;
-        }
+        private const string HORIZONTAL = "Horizontal";
 
-        internal void ResetFireStatus()
-        { 
-            FireRequired = false;
-        }
-
-        internal void Update()
+        public void OnUpdate()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                FireRequired = true;
+                OnFire?.Invoke();
             }
 
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                HorizontalDirection = -1;
-            }
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                HorizontalDirection = 1;
-            }
-            else
-            {
-                HorizontalDirection = 0;
-            }
+            HorizontalDirection = Input.GetAxisRaw(HORIZONTAL);
         }
     }
 }

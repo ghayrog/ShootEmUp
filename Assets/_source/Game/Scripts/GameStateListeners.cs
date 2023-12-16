@@ -3,7 +3,7 @@ namespace Game
 
     public interface IGameListener
     {
-        float Priority { get; }
+        float ExecutionPriority { get; }
     }
 
     public interface IGameStartListener : IGameListener

@@ -6,13 +6,13 @@ namespace EnemySystem
     internal sealed class EnemyMovement
     {
         private const float MIN_DISTANCE_ERROR = 0.25f;
-        private UnitMovementComponent _movement;
+        private MovementComponent _movement;
         private Transform _selfTransform;
         private Transform _moveTarget;
 
         internal bool isTargetReached { get; private set; }
 
-        internal EnemyMovement(UnitMovementComponent movement, Transform selfTransform, Transform moveTarget)
+        internal EnemyMovement(MovementComponent movement, Transform selfTransform, Transform moveTarget)
         { 
             _movement = movement;
             _selfTransform = selfTransform;

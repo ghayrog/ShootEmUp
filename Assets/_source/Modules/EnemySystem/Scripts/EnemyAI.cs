@@ -12,14 +12,13 @@ namespace EnemySystem
         private WeaponComponent _weapon;
 
         [SerializeField]
-        private UnitMovementComponent _movement;
+        private MovementComponent _movement;
 
         [SerializeField]
         private float _shootingCooldownTimer;
 
         private EnemyMovement _enemyMovement;
         private EnemyWeapon _enemyWeapon;
-        private bool _isUpdateAllowed = false;
 
         internal void SetTargets(Transform moveTarget, Transform aimTarget)
         {
@@ -35,7 +34,6 @@ namespace EnemySystem
 
         internal void OnFixedUpdate()
         {
-            if (!_isUpdateAllowed) return;
             _enemyMovement.FixedUpdate();
             _enemyWeapon.FixedUpdate(Time.fixedDeltaTime, _enemyMovement.isTargetReached);
         }
@@ -44,7 +42,6 @@ namespace EnemySystem
         {
             Debug.Log("Initializing Enemy AI");
             enabled = true;
-            _isUpdateAllowed= true;
             _movement.OnGameStart();
             _weapon.OnGameStart();
             _enemyMovement = new EnemyMovement(_movement, transform, transform);
@@ -53,24 +50,20 @@ namespace EnemySystem
 
         internal void Deactivate()
         {
-            _movement.OnGameFinish();
             _weapon.OnGameFinish();
             _enemyMovement = null;
             _enemyWeapon = null;
-            _isUpdateAllowed = false;
             enabled = false;
         }
 
         internal void OnGamePause()
         {
-            _movement.OnGamePause();
             _weapon.OnGamePause();
             enabled = false;
         }
 
         internal void OnGameResume()
         {
-            _movement.OnGameResume();
             _weapon.OnGameResume();
             enabled = true;
         }

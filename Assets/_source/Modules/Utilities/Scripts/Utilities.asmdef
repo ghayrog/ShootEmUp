@@ -1,10 +1,7 @@
 {
-    "name": "Game",
-    "rootNamespace": "Game",
-    "references": [
-        "GUID:e7f0fd56f903efe4ca3252f98a4ef0da",
-        "GUID:1e26b03843956d342ac28ecfb358d4c0"
-    ],
+    "name": "Utilities",
+    "rootNamespace": "Utilities",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

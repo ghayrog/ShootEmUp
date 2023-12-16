@@ -8,7 +8,7 @@ namespace Common
         IGameStartListener, IGameFinishListener, IGamePauseListener, IGameResumeListener,
         IGameFixedUpdateListener
     {
-        public float Priority => (float)LoadingPriority.Low;
+        public float ExecutionPriority => (float)LoadingPriority.Low;
 
         [SerializeField]
         private Params _params;
@@ -19,7 +19,6 @@ namespace Common
         private float _positionX;
         private float _positionZ;
         private Transform _myTransform;
-        private bool _isUpdateAllowed = false;
         private Vector3 _initialPosition;
 
 
@@ -43,7 +42,6 @@ namespace Common
         {
             _initialPosition = transform.position;
             enabled = true;
-            _isUpdateAllowed = true;
             _startPositionY = _params.StartPositionY;
             _endPositionY = _params.EndPositionY;
             _movingSpeedY = _params.MovingSpeedY;
@@ -56,7 +54,6 @@ namespace Common
         public void OnFixedUpdate()
         {
             if (!enabled) return;
-            if (!_isUpdateAllowed) return;
             if (_myTransform.position.y <= _endPositionY)
             {
                 _myTransform.position = new Vector3(
