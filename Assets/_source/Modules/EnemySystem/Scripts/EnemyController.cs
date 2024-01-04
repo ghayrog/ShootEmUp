@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
-using HealthSystem;
+using GameUnits;
 using ShootingSystem;
-using Game;
 
 namespace EnemySystem
 {
@@ -12,28 +11,46 @@ namespace EnemySystem
         public bool IsAlive { get; private set; }
 
         [SerializeField]
-        private HealthComponent _health;
+        private GameUnit _gameUnit;
 
         [SerializeField]
         private EnemyAI _enemyAI;
 
         public void Initialize(Vector3 position, Transform moveTarget, Transform aimTarget, BulletSpawner bulletSpawner)
         {
-            Debug.Log("Initializing Enemy Controller");
+            //Debug.Log("Initializing Enemy Controller");
             transform.position = position;
-            _enemyAI.Initialize();
+
+            _gameUnit.InitializeUnit(bulletSpawner);
+            _gameUnit.OnGameStart();
+            _gameUnit.DestructableUnit.HealthComponent.OnDeath += EnemyDeath;
+
+            _enemyAI.Initialize(_gameUnit);
             _enemyAI.SetTargets(moveTarget, aimTarget);
-            _enemyAI.SetSpawner(bulletSpawner);
-            _health.OnGameStart();
-            _health.OnDeath += EnemyDeath;
+
             IsAlive = true;
         }
 
-        private void EnemyDeath(GameObject gameObject)
+        private void EnemyDeath()
         {
-            _health.OnDeath -= EnemyDeath;
+            _gameUnit.DestructableUnit.HealthComponent.OnDeath -= EnemyDeath;
             OnDeath.Invoke(this);
             IsAlive = false;
+        }
+
+        internal void OnFixedUpdate(float fixedDeltaTime)
+        {
+            _enemyAI.OnFixedUpdate(fixedDeltaTime);
+        }
+
+        internal void OnGamePause()
+        {
+            _gameUnit.WeaponComponent.OnGamePause();
+        }
+
+        internal void OnGameResume()
+        {
+            _gameUnit.WeaponComponent.OnGameResume();
         }
     }
 }

@@ -1,23 +1,36 @@
-﻿using Game;
+﻿using DI;
+using Game;
 using GameUnits;
-using UnityEngine;
 
 namespace Player
 {
-    internal sealed class PlayerMovementController : MonoBehaviour,
-        IGameFixedUpdateListener
+    internal sealed class PlayerMovementController : 
+        IGameFixedUpdateListener, IGameStartListener
     {
         public float ExecutionPriority => (float)LoadingPriority.Low;
 
-        [SerializeField]
         private MovementComponent _playerMovement;
 
-        [SerializeField]
         private PlayerInput _playerInput;
 
-        public void OnFixedUpdate()
+        private GameUnit _gameUnit;
+
+        [Inject]
+        internal void Construct(GameUnit gameUnit, PlayerInput playerInput)
+        {
+            _gameUnit = gameUnit;
+            _playerInput = playerInput;
+        }
+
+        public void OnGameStart()
+        {
+            _playerMovement = _gameUnit.MovementComponent;
+        }
+
+        public void OnFixedUpdate(float fixedDeltaTime)
         {
             if (_playerInput.HorizontalDirection != 0) _playerMovement.Move(_playerInput.HorizontalDirection, 0);
         }
+
     }
 }

@@ -28,17 +28,17 @@ namespace Game
 
     public interface IGameUpdateListener : IGameListener
     { 
-        void OnUpdate();
+        void OnUpdate(float deltaTime);
     }
 
     public interface IGameFixedUpdateListener : IGameListener
     {
-        void OnFixedUpdate();
+        void OnFixedUpdate(float fixedDeltaTime);
     }
 
     public interface IGameLateUpdateListener : IGameListener
     {
-        void OnLateUpdate();
+        void OnLateUpdate(float deltaTime);
     }
 
 }

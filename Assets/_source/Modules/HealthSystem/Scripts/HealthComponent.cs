@@ -1,21 +1,18 @@
-using Game;
 using System;
 using UnityEngine;
 
 namespace HealthSystem
 {
-    public sealed class HealthComponent : MonoBehaviour,
-        IGameStartListener
+    [Serializable]
+    public sealed class HealthComponent
     {
-        public event Action<GameObject> OnDeath;
-        public event Action<GameObject> OnTakeDamage;
+        public event Action OnDeath;
+        public event Action OnTakeDamage;
 
         [SerializeField]
         private int _maxHitPoints;
 
         private int _hitPoints;
-
-        public float ExecutionPriority => (float)LoadingPriority.Low;
 
         public void OnGameStart()
         {
@@ -26,14 +23,14 @@ namespace HealthSystem
         {
             if (_hitPoints > 0)
             {
-                OnTakeDamage?.Invoke(gameObject);
+                OnTakeDamage?.Invoke();
             }
 
             _hitPoints = Mathf.Max(_hitPoints - damage, 0);
 
             if (_hitPoints <= 0)
             {
-                OnDeath?.Invoke(gameObject);
+                OnDeath?.Invoke();
             }
         }
     }

@@ -23,7 +23,7 @@ namespace Game
             if (_gameState != GameState.Playing) return;
             for (var i = 0; i < gameFixedUpdateListeners.Count; i++)
             {
-                gameFixedUpdateListeners[i].OnFixedUpdate();
+                gameFixedUpdateListeners[i].OnFixedUpdate(Time.fixedDeltaTime);
             }
         }
 
@@ -32,7 +32,7 @@ namespace Game
             if (_gameState != GameState.Playing) return;
             for (var i = 0; i < gameUpdateListeners.Count; i++)
             {
-                gameUpdateListeners[i].OnUpdate();
+                gameUpdateListeners[i].OnUpdate(Time.deltaTime);
             }
         }
 
@@ -41,15 +41,15 @@ namespace Game
             if (_gameState != GameState.Playing) return;
             for (var i = 0; i < gameLateUpdateListeners.Count; i++)
             {
-                gameLateUpdateListeners[i].OnLateUpdate();
+                gameLateUpdateListeners[i].OnLateUpdate(Time.deltaTime);
             }
         }
 
-        internal void AddMultipleListeners(IGameListener[] listeners)
+        internal void AddMultipleListeners(IEnumerable<IGameListener> listeners)
         {
-            for (int i = 0; i < listeners.Length; i++)
+            foreach (var listener in listeners)
             {
-                AddListener(listeners[i]);
+                AddListener(listener);
             }
         }
 

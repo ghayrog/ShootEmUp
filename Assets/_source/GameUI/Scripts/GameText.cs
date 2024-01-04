@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game
+namespace GameUI
 {
     [RequireComponent(typeof(Text))]
     internal sealed class GameText : MonoBehaviour
@@ -13,7 +13,7 @@ namespace Game
         internal void Awake()
         {
             _selfText = gameObject.GetComponent<Text>();
-            gameObject.SetActive(false);
+            _selfText.text = "";
         }
 
         internal void ShowGameMessage(string message, float timer)
@@ -30,7 +30,6 @@ namespace Game
         private void ResetMessageText()
         {
             _selfText.text = "";
-            gameObject.SetActive(false);
         }
 
         private IEnumerator HideMessageTimer(float timer)

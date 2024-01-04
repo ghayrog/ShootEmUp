@@ -1,10 +1,10 @@
-using UnityEngine;
-using Common;
-using Game;
 using System.Collections.Generic;
+using UnityEngine;
+using Utilities;
+using Game;
 
 namespace ShootingSystem
-{ 
+{
     public sealed class BulletSpawner : MonoBehaviour,
         IGameStartListener, IGameFinishListener, IGamePauseListener, IGameResumeListener,
         IGameFixedUpdateListener
@@ -21,13 +21,14 @@ namespace ShootingSystem
 
         public void OnGameStart()
         {
+            _bulletPool.InitializePool();
         }
 
-        public void OnFixedUpdate()
+        public void OnFixedUpdate(float fixedDeltaTime)
         {
             for (int i = 0; i < _bullets.Count; i++)
             {
-                _bullets[i].OnFixedUpdate();
+                _bullets[i].OnFixedUpdate(fixedDeltaTime);
             }
         }
 
@@ -50,6 +51,7 @@ namespace ShootingSystem
         public void OnGameFinish()
         {
             _bullets.Clear();
+            _bulletPool.CleanPool();
         }
 
         internal void SpawnBullet(Transform firePoint, BulletConfig bulletConfig)

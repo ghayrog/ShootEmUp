@@ -34,16 +34,16 @@ namespace Utilities
         private IEnumerator TimerCoroutine()
         {
             OnTimerStarted?.Invoke(_timeStepCount, _timeStep);
-            Debug.Log($"Timer started: {_timeStepCount} {_timeStep}");
+            //Debug.Log($"Timer started: {_timeStepCount} {_timeStep}");
             for (int i = _timeStepCount; i > 0; i--)
             {
                 yield return new WaitForSeconds(_timeStep);
                 OnTimerChanged?.Invoke(i-1, _timeStep);
-                Debug.Log("Timer ticked");
+                //Debug.Log("Timer ticked");
             }
 
             OnTimerCompleted?.Invoke();
-            Debug.Log("Timer ended");
+            //Debug.Log("Timer ended");
         }
 
     }

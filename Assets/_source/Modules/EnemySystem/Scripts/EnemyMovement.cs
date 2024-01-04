@@ -1,5 +1,5 @@
-using GameUnits;
 using UnityEngine;
+using GameUnits;
 
 namespace EnemySystem
 {

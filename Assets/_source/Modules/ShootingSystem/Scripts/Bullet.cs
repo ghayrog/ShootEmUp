@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
+using Game;
 using Common;
 using TeamsSystem;
 using HealthSystem;
-using Game;
 
 namespace ShootingSystem
 {
@@ -69,8 +69,9 @@ namespace ShootingSystem
 
         private bool CheckCollisionWithHealth(Collision2D collision)
         {
-            var health = collision.gameObject.GetComponent<HealthComponent>();
-            if (!health) return false;
+            var gameUnit = collision.gameObject.GetComponent<DestructableUnit>();
+            if (!gameUnit) return false;
+            var health = gameUnit.HealthComponent;
 
             var teamMember = collision.gameObject.GetComponent<TeamMember>();
             if (teamMember && Team == teamMember.Team) return false;
@@ -80,7 +81,7 @@ namespace ShootingSystem
             return true;
         }
 
-        public void OnFixedUpdate()
+        public void OnFixedUpdate(float fixedDeltaTime)
         {
             if (!_bulletBoundary.InBoundaries(this.transform.position))
             {

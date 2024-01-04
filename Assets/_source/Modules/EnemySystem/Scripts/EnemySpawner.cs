@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Common;
-using ShootingSystem;
+using DI;
 using Game;
+using Utilities;
+using ShootingSystem;
+using GameUnits;
 
 namespace EnemySystem
 {
+
     internal sealed class EnemySpawner : MonoBehaviour,
         IGameStartListener, IGameFinishListener, IGameFixedUpdateListener, IGamePauseListener, IGameResumeListener
     {
@@ -19,24 +22,29 @@ namespace EnemySystem
         private ObjectPool _enemyPool;
 
         [SerializeField]
-        private Transform aimTarget;
-
-        [SerializeField]
         private EnemyPositions _enemyPositions;
 
-        [SerializeField]
+        private Transform aimTarget;
+
         private BulletSpawner _bulletSpawner;
 
-        private List<EnemyAI> _enemies = new();
+        private List<EnemyController> _enemies = new();
+
+        [Inject]
+        public void Construct(BulletSpawner bulletSpawner, GameUnit playerTarget)
+        {
+            _bulletSpawner = bulletSpawner;
+            aimTarget = playerTarget.gameObject.transform;
+        }
 
         internal void TrySpawnEnemy()
         {
             if (!enabled) return;
             if (_enemies.Count >= _maxEnemyCount) return;
-            Debug.Log("Trying to spawn an enemy");
+            //Debug.Log("Trying to spawn an enemy");
             var enemyObject = _enemyPool.GetFromPool();
             var enemy = enemyObject.GetComponent<EnemyController>();
-            _enemies.Add(enemyObject.GetComponent<EnemyAI>());
+            _enemies.Add(enemy);
             Transform spawnPoint = _enemyPositions.RandomSpawnPosition();
             Transform moveTarget = _enemyPositions.RandomAttackPosition();
             enemy.Initialize(spawnPoint.position, moveTarget, aimTarget, _bulletSpawner);
@@ -48,18 +56,19 @@ namespace EnemySystem
             if (!enabled) return;
             enemy.OnDeath -= ReturnEnemy;
             _enemyPool.ReturnToPool(enemy.gameObject);
-            _enemies.Remove(enemy.gameObject.GetComponent<EnemyAI>());
+            _enemies.Remove(enemy);
         }
 
         public void OnGameStart()
         {
+            _enemyPool.InitializePool();
         }
 
-        public void OnFixedUpdate()
+        public void OnFixedUpdate(float fixedDeltaTime)
         {
             for (int i = 0; i < _enemies.Count; i++)
             {
-                _enemies[i].OnFixedUpdate();
+                _enemies[i].OnFixedUpdate(fixedDeltaTime);
             }
         }
 
@@ -87,6 +96,7 @@ namespace EnemySystem
                 ReturnEnemy(_enemies[0].gameObject.GetComponent<EnemyController>());
             }
             _enemies.Clear();
+            _enemyPool.CleanPool();
         }
     }
 }

@@ -1,20 +1,28 @@
 ﻿using System.Globalization;
 using UnityEngine;
+using DI;
 using Utilities;
 
-namespace Game
+namespace GameUI
 {
-    [RequireComponent(typeof(GameText))]
+    //[RequireComponent(typeof(GameText))]
     internal sealed class UITextTimerController : MonoBehaviour
     {
-        [SerializeField]
         private Timer _timer;
 
         private GameText _gameText;
 
-        private void Awake()
+        [Inject]
+        public void Construct(GameText gameText, Timer timer)
         {
-            _gameText= GetComponent<GameText>();
+            Debug.Log("Construct UITextTimerController");
+            _timer = timer;
+            _gameText = gameText;
+        }
+
+        private void Start()
+        {
+            //_gameText= GetComponent<GameText>();
 
             _timer.OnTimerStarted += SetTextByNumber;
             _timer.OnTimerChanged += SetTextByNumber;
@@ -35,7 +43,7 @@ namespace Game
 
         private void DisableTextTimerController()
         { 
-            gameObject.SetActive(false);
+            _gameText.gameObject.SetActive(false);
             _timer.OnTimerCompleted -= DisableTextTimerController;
         }
     }

@@ -2,7 +2,9 @@
     "name": "GameUnits",
     "rootNamespace": "GameUnits",
     "references": [
-        "GUID:7096991a729bfb144999c7062406140d"
+        "GUID:7096991a729bfb144999c7062406140d",
+        "GUID:951bb3a2218977745bfb938221f4ef43",
+        "GUID:07c50e1644c743646943aa82967971c2"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

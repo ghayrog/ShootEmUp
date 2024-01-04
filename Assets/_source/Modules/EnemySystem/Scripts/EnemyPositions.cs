@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 namespace EnemySystem
 {
-    internal sealed class EnemyPositions : MonoBehaviour
+    [Serializable]
+    internal sealed class EnemyPositions
     {
         [SerializeField]
         private Transform[] _spawnPositions;
@@ -22,7 +24,7 @@ namespace EnemySystem
 
         private Transform RandomTransform(Transform[] transforms)
         {
-            var index = Random.Range(0, transforms.Length);
+            var index = UnityEngine.Random.Range(0, transforms.Length);
             return transforms[index];
         }
     }

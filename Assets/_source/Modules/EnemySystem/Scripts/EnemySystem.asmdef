@@ -2,11 +2,12 @@
     "name": "EnemySystem",
     "rootNamespace": "EnemySystem",
     "references": [
-        "GUID:daf56cadbc1ea614994800ee06124dee",
+        "GUID:1e26b03843956d342ac28ecfb358d4c0",
         "GUID:9f6c18ef623676348aee7ed12e15e6e2",
         "GUID:951bb3a2218977745bfb938221f4ef43",
         "GUID:07c50e1644c743646943aa82967971c2",
-        "GUID:7096991a729bfb144999c7062406140d"
+        "GUID:7096991a729bfb144999c7062406140d",
+        "GUID:4a425e8ca1ae69c419c4a101ae44eed5"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

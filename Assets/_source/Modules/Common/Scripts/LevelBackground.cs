@@ -51,7 +51,7 @@ namespace Common
             _positionZ = position.z;
         }
 
-        public void OnFixedUpdate()
+        public void OnFixedUpdate(float fixedDeltaTime)
         {
             if (!enabled) return;
             if (_myTransform.position.y <= _endPositionY)
@@ -65,7 +65,7 @@ namespace Common
 
             _myTransform.position -= new Vector3(
                 _positionX,
-                _movingSpeedY * Time.fixedDeltaTime,
+                _movingSpeedY * fixedDeltaTime,
                 _positionZ
             );
         }

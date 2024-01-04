@@ -43,10 +43,9 @@ GameObject:
   - component: {fileID: 4769977929603339854}
   - component: {fileID: 2446625276458797686}
   - component: {fileID: 5270272770677049042}
-  - component: {fileID: 2446625276458797680}
   - component: {fileID: 2446625276458797681}
-  - component: {fileID: 2446625276458797682}
-  - component: {fileID: 2446625276458797683}
+  - component: {fileID: 4097468439354837731}
+  - component: {fileID: 2125187756659265522}
   m_Layer: 10
   m_Name: PlayerStarship
   m_TagString: Untagged
@@ -159,21 +158,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &2446625276458797680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8711802515404826624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86fa92e5f8d37874e8d00f64148f459c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _firePoint: {fileID: 5018176488481111381}
-  _bulletConfig: {fileID: 11400000, guid: 22652783d9f81c349bcbccf974dbbaaa, type: 2}
-  _bulletSpawner: {fileID: 0}
 --- !u!114 &2446625276458797681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,8 +170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce848b21073a0a4998793633e4428aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 1
---- !u!114 &2446625276458797682
+  <Team>k__BackingField: 1
+--- !u!114 &4097468439354837731
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,20 +180,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 8711802515404826624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9459ad4cc293bd945931010351b25f30, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ca008ed418aee444b11ced3b2251561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HealthComponent>k__BackingField:
+    _maxHitPoints: 5
+--- !u!114 &2125187756659265522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8711802515404826624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ae18c3b5d62c24490fa97988e89530, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firePoint: {fileID: 5018176488481111381}
+  _bulletConfig: {fileID: 11400000, guid: 22652783d9f81c349bcbccf974dbbaaa, type: 2}
   _speed: 5
---- !u!114 &2446625276458797683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8711802515404826624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb10504357c734642851e02f57cf42f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHitPoints: 5
+  <DestructableUnit>k__BackingField: {fileID: 4097468439354837731}

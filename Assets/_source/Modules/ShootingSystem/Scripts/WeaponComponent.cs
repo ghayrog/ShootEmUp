@@ -1,21 +1,23 @@
 using UnityEngine;
-using Game;
 
 namespace ShootingSystem
 {
-    public sealed class WeaponComponent : MonoBehaviour,
-        IGameStartListener, IGameFinishListener, IGamePauseListener, IGameResumeListener
+    public sealed class WeaponComponent
     {
-        public float ExecutionPriority => (float)LoadingPriority.Low;
-
-        [SerializeField]
         private Transform _firePoint;
 
-        [SerializeField]
         private BulletConfig _bulletConfig;
 
-        [SerializeField]
         private BulletSpawner _bulletSpawner;
+
+        private bool enabled = false;
+
+        public WeaponComponent(Transform firePoint, BulletConfig bulletConfig, BulletSpawner bulletSpawner)
+        {
+            _firePoint = firePoint;
+            _bulletConfig = bulletConfig;
+            _bulletSpawner = bulletSpawner;
+        }
 
         public void OnGameStart()
         {

@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace ShootingSystem
 {
-    internal sealed class BulletBoundary : MonoBehaviour
+    [Serializable]
+    internal sealed class BulletBoundary
     {
-
         [SerializeField]
         private Transform _leftBorder;
 

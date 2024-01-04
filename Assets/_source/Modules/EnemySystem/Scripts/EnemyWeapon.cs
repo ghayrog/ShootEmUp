@@ -12,7 +12,6 @@ namespace EnemySystem
         private float _shootingElapsedTime;
         private Transform _selfTransform;
 
-
         internal EnemyWeapon(WeaponComponent weapon, float shootingCooldownTimer, Transform selfTransform, Transform aimTarget)
         {
             _weapon = weapon;

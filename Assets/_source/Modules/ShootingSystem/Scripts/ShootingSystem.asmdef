@@ -2,10 +2,12 @@
     "name": "ShootingSystem",
     "rootNamespace": "ShootingSystem",
     "references": [
-        "GUID:daf56cadbc1ea614994800ee06124dee",
+        "GUID:1e26b03843956d342ac28ecfb358d4c0",
         "GUID:951bb3a2218977745bfb938221f4ef43",
         "GUID:57ce44fb709bcef4ea7ff49daa6b84d2",
-        "GUID:7096991a729bfb144999c7062406140d"
+        "GUID:7096991a729bfb144999c7062406140d",
+        "GUID:4a425e8ca1ae69c419c4a101ae44eed5",
+        "GUID:daf56cadbc1ea614994800ee06124dee"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

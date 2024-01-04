@@ -1,24 +1,17 @@
-using Game;
 using UnityEngine;
 
 namespace GameUnits
 {
-    public sealed class MovementComponent : MonoBehaviour,
-        IGameStartListener
+    public sealed class MovementComponent
     {
-        public float ExecutionPriority => (float)LoadingPriority.Low;
-
-        [SerializeField]
-        private float _speed = DEFAULT_SPEED;
+        private float _speed;
 
         private Rigidbody2D _rigidbody2D;
 
-        private const float DEFAULT_SPEED = 5f;
-
-        public void OnGameStart()
+        public MovementComponent(float speed, Rigidbody2D rigidbody2D)
         {
-            _rigidbody2D = GetComponent<Rigidbody2D>();
-            Debug.Log($"Initializing Unit Movement Component for {gameObject.name}");
+            _speed = speed;
+            _rigidbody2D = rigidbody2D;
         }
 
         public void Move(float horizontalAxis, float verticalAxis)

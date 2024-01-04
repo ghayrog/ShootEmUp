@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using DI;
 using Game;
 
 namespace EnemySystem
@@ -9,7 +10,6 @@ namespace EnemySystem
     {
         public float ExecutionPriority => (float)LoadingPriority.Low;
 
-        [SerializeField]
         private EnemySpawner _enemySpawner;
 
         [SerializeField]
@@ -17,6 +17,12 @@ namespace EnemySystem
 
         private Coroutine _periodicSpawnCoroutine;
         private bool _isSpawning = false;
+
+        [Inject]
+        public void Construct(EnemySpawner enemySpawner)
+        {
+            _enemySpawner = enemySpawner;
+        }
 
         public void OnGameStart()
         {
